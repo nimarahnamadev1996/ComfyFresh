@@ -95,3 +95,77 @@ export const getCurrentUserFromSupabase = async () => {
   }
 
 }
+
+
+
+
+export const getAllUsers = async ({ roleType = "" }: { roleType: string }) => {
+  try {
+    let query = supabase
+      .from("user_profiles")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (roleType === "seller") {
+      query = query.eq("is_seller", true).neq("is_admin", true);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export const addSeller = async (email: string) => {
+  try {
+    // check if the user is already present in the user_profiles table , is_seller value is true
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("email", email);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data.length > 0) {
+      const row = data[0];
+      if (row.is_seller) {
+        throw new Error("Seller already exists");
+      } else {
+        const { data, error } = await supabase
+          .from("user_profiles")
+          .update({ is_seller: true })
+          .eq("email", email);
+        if (error) {
+          throw new Error(error.message);
+        }
+        return {
+          success: true,
+          message: "Seller added successfully",
+        };
+      }
+    }
+
+    return {
+      success: false,
+      message: "Seller not found",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
