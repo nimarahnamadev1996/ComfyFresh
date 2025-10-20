@@ -54,7 +54,7 @@ function CheckoutForm({
       });
 
       if (result.error) {
-        toast.error(result.error.message);
+         console.log(result.error);
       } else {
         toast.success("Payment completed successfully");
         onPaymentSuccess(result.paymentIntent.id);
