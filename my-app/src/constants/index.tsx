@@ -22,6 +22,8 @@ export const productCategories = [
   },
 ];
 
+
+
 export const productSortOptions = [
   {
     label: "Price: Low to High",
