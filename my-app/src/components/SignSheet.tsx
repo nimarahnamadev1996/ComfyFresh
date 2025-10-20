@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { SignIn, SignUp } from '@clerk/nextjs';
-import { useSearchParams } from 'next/navigation';
 
 interface Props {
   open: boolean;
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export default function SignSheet({ open, onOpenChange }: Props) {
-    
   const searchParams = useSearchParams();
   const formType = searchParams.get('formType');
 
