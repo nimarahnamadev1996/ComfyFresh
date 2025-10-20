@@ -1,12 +1,11 @@
-'use client'
-
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import hero from '../../public/hero.png';
-import SignSheet from '@/components/SignSheet';
 
+const SignSheet = dynamic(() => import('@/components/SignSheet'), { ssr: false });
 
 const menuItems = [
   { name: "About", path: "/about" },
@@ -18,17 +17,13 @@ export default function HomePage() {
 
   return (
     <div className="lg:px-20 p-5">
-      {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-sm text-primary md:text-xl lg:text-2xl">
-          <Link href="/">
-            <b>ComfyFresh</b>
-          </Link>
+          <Link href="/"><b>ComfyFresh</b></Link>
         </h1>
-
         <div className="flex gap-2 items-center md:gap-5">
-          {menuItems.map((item, index) => (
-            <Link key={index} href={item.path} className="text-sm text-gray-600 md:text-md lg:text-xl">
+          {menuItems.map((item, idx) => (
+            <Link key={idx} href={item.path} className="text-sm text-gray-600 md:text-md lg:text-xl">
               {item.name}
             </Link>
           ))}
@@ -36,7 +31,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Hero Section */}
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-5 min-h-[80vh] items-center">
         <div className="col-span-1">
           <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-primary">
@@ -49,15 +43,10 @@ export default function HomePage() {
           </p>
         </div>
         <div className="col-span-1 flex justify-center lg:justify-end">
-          <Image
-            src={hero}
-            alt="ComfyFresh"
-            className="w-auto h-80 object-contain"
-          />
+          <Image src={hero} alt="ComfyFresh" className="w-auto h-80 object-contain" />
         </div>
       </div>
 
-      {/* SignIn / SignUp Sheet */}
       <SignSheet open={openSignInForm} onOpenChange={setOpenSignInForm} />
     </div>
   );
